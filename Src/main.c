@@ -72,6 +72,16 @@ int main() {
   size_t actionsTaken = 0;
   //while (state.patchOffset < state.patch.size - 12) {
   while (state.outputOffset < state.patch.size - 12) {
+
+    static const char * actionName[4] = {
+      "SourceRead",
+      "TargetRead",
+      "SourceCopy",
+      "TargetCopy",
+    };
+
+    printf("%08lX %s %ld\n", state.patchOffset, actionName[action.type], action.length);
+
     if (!BPS_ReadAction(&state, &action)) {
       printf("Failed to read action.\n");
       return 1;
