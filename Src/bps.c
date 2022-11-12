@@ -32,14 +32,14 @@ bool BPS_ReadAction(BPS_State_t* state, BPS_Action_t* action) {
   if (!BPS_ReadUnsigned(state, &value)) return false;
 
   action->type = value & 0x3;
-  action->length = (value >> 2) + 1;
+  action->length = (value >> 2); // + 1;
 
   return true;
 }
 
 bool BPS_SourceRead(BPS_State_t* state, uint64_t length) {
     if (state->outputOffset + length > state->source.size) return false;
-    if (state->outputOffset + length > state->target.size) return false;
+    //if (state->outputOffset + length > state->target.size) return false;
 
   while (length-- > 0) {
     state->target.data[state->outputOffset] = state->source.data[state->outputOffset];
@@ -51,7 +51,7 @@ bool BPS_SourceRead(BPS_State_t* state, uint64_t length) {
 
 bool BPS_TargetRead(BPS_State_t* state, uint64_t length) {
   if (state->patchOffset + length > state->patch.size) return false;
-  if (state->outputOffset + length > state->target.size) return false;
+  //if (state->outputOffset + length > state->target.size) return false;
 
   while (length-- > 0) {
     state->target.data[state->outputOffset++] = state->patch.data[state->patchOffset++];

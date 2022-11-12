@@ -3,7 +3,7 @@
 #include "bps.h"
 #include "stdio.h"
 
-#define PATCH_FILE  "patches/SUPERSTAR.bps"
+#define PATCH_FILE  "patches/Super_Mario_World_Odyssey_v1_Beta.bps"
 #define ROM_FILE    "roms/Super Mario World (USA).smc"
 #define TARGET_FILE "roms/patched.smc"
 
@@ -70,7 +70,8 @@ int main() {
   printf("Applying patch actions...\n");
   BPS_Action_t action;
   size_t actionsTaken = 0;
-  while (state.patchOffset < state.patch.size - 12) {
+  //while (state.patchOffset < state.patch.size - 12) {
+  while (state.outputOffset < state.patch.size - 12) {
     if (!BPS_ReadAction(&state, &action)) {
       printf("Failed to read action.\n");
       return 1;
