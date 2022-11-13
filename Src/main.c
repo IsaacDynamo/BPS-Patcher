@@ -121,6 +121,11 @@ int main() {
   }
   printf("Finished applying %ld patch actions.\n", actionsTaken);
 
+  if (state.outputOffset != state.target.size) {
+    printf("Not all target data has been written.\n");
+    return 1;
+  }
+
   printf("Checking target CRC...\n");
   uint32_t targetCRC = *(uint32_t*)(state.patch.data + (state.patch.size - 8));
   if (targetCRC != CRC32_Digest(state.target.data, state.target.size)) {

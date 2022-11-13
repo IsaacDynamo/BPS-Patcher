@@ -86,6 +86,7 @@ bool BPS_TargetCopy(BPS_State_t* state, uint64_t length) {
   if (state->targetRelativeOffset < 0) return false;
   if (state->targetRelativeOffset + length > state->target.size) return false;
   if (state->outputOffset + length > state->target.size) return false;
+  if (state->targetRelativeOffset > state->outputOffset) return false;
 
   while (length-- > 0) {
     state->target.data[state->outputOffset++] = state->target.data[state->targetRelativeOffset++];
