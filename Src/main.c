@@ -73,6 +73,13 @@ int main() {
   //while (state.patchOffset < state.patch.size - 12) {
   while (state.outputOffset < state.patch.size - 12) {
 
+    uint64_t offset = state.patchOffset;
+
+    if (!BPS_ReadAction(&state, &action)) {
+      printf("Failed to read action.\n");
+      return 1;
+    }
+
     static const char * actionName[4] = {
       "SourceRead",
       "TargetRead",
@@ -80,12 +87,7 @@ int main() {
       "TargetCopy",
     };
 
-    printf("%08lX %s %ld\n", state.patchOffset, actionName[action.type], action.length);
-
-    if (!BPS_ReadAction(&state, &action)) {
-      printf("Failed to read action.\n");
-      return 1;
-    }
+    printf("%08lX %s %ld\n", offset, actionName[action.type], action.length);
 
     switch (action.type) {
       case BPS_ActionType_SourceRead: {
@@ -120,11 +122,6 @@ int main() {
     actionsTaken++;
   }
   printf("Finished applying %ld patch actions.\n", actionsTaken);
-
-  if (state.outputOffset != state.target.size) {
-    printf("Not all target data has been written.\n");
-    return 1;
-  }
 
   printf("Checking target CRC...\n");
   uint32_t targetCRC = *(uint32_t*)(state.patch.data + (state.patch.size - 8));
